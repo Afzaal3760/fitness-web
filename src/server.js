@@ -16,8 +16,8 @@ const startServer = async () => {
     await connectDB();
 
     const server = app.listen(env.PORT, () => {
-      console.log(`[Server] Fitness Web API running in ${env.NODE_ENV} mode on port ${env.PORT}`);
-      console.log(`[Server] Health check available at: http://localhost:${env.PORT}/api/health`);
+      console.log(`💪 Fitness Web API running in ${env.NODE_ENV} mode on port ${env.PORT}`);
+      console.log(`Health check available at: http://localhost:${env.PORT}/api/health`);
     });
 
     // Graceful Shutdown handlers
