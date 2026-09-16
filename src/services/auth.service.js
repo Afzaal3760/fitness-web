@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const env = require('../../config/env');
 const User = require('../models/user.model');
-const { sendVerificationEmail, sendPasswordResetEmail } = require('../templates/email.template');
+const { sendWelcomeEmail, sendVerificationEmail, sendPasswordResetEmail } = require('../templates/email.template');
 
 /**
  * Register a new user account and send an email verification OTP.
@@ -65,7 +65,7 @@ const signup = async (payload) => {
   });
 
   // 9. Send verification email using template
-  await sendVerificationEmail(newUser.email, otp);
+  await sendVerificationEmail(newUser.email, otp, newUser.fullName);
 
   // 10. Return safe user object (excluding password, confirmPassword, OTP)
   return {
@@ -255,7 +255,14 @@ const login = async (payload, maybePassword) => {
     }
   );
 
-  // 7. Return token and safe user data (excluding password, OTPs, reset tokens)
+  // 7. Send welcome email upon successful login
+  try {
+    await sendWelcomeEmail(user.email, user.fullName);
+  } catch (emailErr) {
+    console.error('[Email] Failed to send welcome email:', emailErr.message);
+  }
+
+  // 8. Return token and safe user data (excluding password, OTPs, reset tokens)
   return {
     token,
     user: {
@@ -382,7 +389,7 @@ const forgotPassword = async (payload) => {
     user.resetPasswordOtpExpiresAt = otpExpiresAt;
     await user.save();
 
-    await sendPasswordResetEmail(user.email, otp);
+    await sendPasswordResetEmail(user.email, otp, user.fullName);
   }
 
   // 5. Always return a generic success message to prevent user enumeration

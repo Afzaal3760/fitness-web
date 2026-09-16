@@ -29,7 +29,7 @@ const env = {
     SECURE: process.env.SMTP_SECURE === 'true',
     USER: process.env.SMTP_USER || '',
     PASS: process.env.SMTP_PASS || '',
-    FROM: process.env.EMAIL_FROM || 'Fitness App <no-reply@fitnessapp.com>',
+    FROM: process.env.EMAIL_FROM || (process.env.EMAIL_FROM_ADDRESS ? `"${process.env.EMAIL_FROM_NAME || 'Estrella'}" <${process.env.EMAIL_FROM_ADDRESS}>` : (process.env.SMTP_USER ? `"Estrella" <${process.env.SMTP_USER}>` : 'Estrella <no-reply@fitnessapp.com>')),
   },
 
   // Admin Credentials (for seed setup)
