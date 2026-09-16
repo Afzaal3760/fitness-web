@@ -1,9 +1,14 @@
+const dns = require('dns');
 const mongoose = require('mongoose');
 const env = require('./env');
+
+// Set public DNS servers to resolve MongoDB SRV records reliably
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(env.MONGO_URI);
+
 
     console.log(`✔ MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
 

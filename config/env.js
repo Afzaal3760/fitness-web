@@ -32,6 +32,14 @@ const env = {
     FROM: process.env.EMAIL_FROM || 'Fitness App <no-reply@fitnessapp.com>',
   },
 
+  // Admin Credentials (for seed setup)
+  ADMIN: {
+    EMAIL: process.env.ADMIN_EMAIL || '',
+    PASSWORD: process.env.ADMIN_PASSWORD || '',
+  },
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL || '',
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || '',
+
   // Environment Helpers
   isDevelopment: (process.env.NODE_ENV || 'development') === 'development',
   isProduction: process.env.NODE_ENV === 'production',

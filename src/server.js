@@ -1,6 +1,7 @@
 const app = require('./app');
 const env = require('../config/env');
 const connectDB = require('../config/db');
+const seedAdmin = require('./utils/seedAdmin');
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -14,6 +15,9 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
+
+    // Seed initial Admin user if configured
+    await seedAdmin();
 
     const server = app.listen(env.PORT, () => {
       console.log(`💪 Fitness Web API running in ${env.NODE_ENV} mode on port ${env.PORT}`);
